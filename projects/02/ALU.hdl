@@ -43,25 +43,26 @@ CHIP ALU {
 
     PARTS:
    // Put you code here:
+    Mux16(a=x, sel=zx, out=x1);
+    Not16(in=x1, out=nx1);
+    Mux16(a=x1, b=nx1, sel=nx, out=x2);
 
-   Mux16(a=x, b=false, sel=zx, out=x1);
-   Mux16(a=y, b=false, sel=zx, out=y1);
+    Mux16(a=y, sel=zx, out=y1);
+    Not16(in=y1, out=ny1);
+    Mux16(a=y1, b=ny1, sel=ny, out=y2);
 
-   Not16(in=x1, out=nx1);
-   Mux16(a=x1, b=nx1, sel=nx, out=x2);
-   Not16(in=y1, out=ny1);
-   Mux16(a=y1, b=ny1, sel=ny, out=y2);
+    And16(a=x2, b=y2, out=xandy);
+    And16(a=x2, b=y2, out=xplusy);
+    Mux16(a=xandy, b=xplusy, sel=f, out=xy);
 
-   And16(a=x2, b=y2, out=xandy);
-   And16(a=x2, b=y2, out=xplus);
-   Mux16(a=xandy, b=xplusy, sel=f, out=xy);
+    Not16(in=xy, out=nxy);
+    Mux16(a=xy, b=nxy, sel=no, out[15]=first, out[0..7]=half1, out[8..15]=half2, out=out);
 
-   Not16(in=xy, out=nxy);
-   Mux16(a=xy, b=nxy, sel=no, out[15]=ng, out[0...7]=part1, out[7...15]=part2, out=out);
 
-   Not(in=nz, out=zr);
-   Or(a=or1, b=or2, out=nz);
-   Or8Way(in=part1, out=or1);
-   Or8Way(in=part2, out=or2);
+    Or8Way(in=half1, out=or1);
+    Or8Way(in=half2, out=or2);
+    Or(a=or1, b=or2, out=nzr);
+    Not(in=nzr, out=zr);
 
+    And(a=first, b=true, out=ng);
 }
