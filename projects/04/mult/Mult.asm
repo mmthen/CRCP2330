@@ -10,7 +10,23 @@
 // R0 >= 0, R1 >= 0, and R0*R1 < 32768.
 
 // Put your code here.
-/**		Mov R0, #4
- *		Mov R1, #4
- *		Multi R2, R0, R1
+/**	
+ *		Mov R0, #4;
+ *		Mov R1, #4;
+ *
+ *		CMP R0, #0;
+ * 		BGE comp1
+ *
+ *comp1 CMP R1, #0;
+ *		BGE multicomp;
+ *
+ *multicomp		Multi R3, R0, R1;		
+ *				CMP R3, 32768;
+ *				BLT movR2
+ *	
+ *movR2	Mov R2, R3;
  */
+
+ @R2
+ M=0
+
