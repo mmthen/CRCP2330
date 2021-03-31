@@ -23,5 +23,17 @@ D;JGT
 0;JMP
 
 (ON)
+@R0
+M=-1
+
+@draw
+0;JMP
 
 (OFF)
+@R0
+M=0
+
+@draw
+0;JMP
+
+(draw)
