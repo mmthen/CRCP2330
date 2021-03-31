@@ -12,3 +12,16 @@
 // the screen should remain fully clear as long as no key is pressed.
 
 // Put your code here.
+
+@keyboard
+D=M
+
+@ON
+D;JGT
+
+@OFF
+0;JMP
+
+(ON)
+
+(OFF)
