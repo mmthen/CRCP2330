@@ -12,33 +12,5 @@
 // the screen should remain fully clear as long as no key is pressed.
 
 // Put your code here.
-(link)
-@keyboard
-D=M
 
-@ON
-D;JGT
-
-@OFF
-0;JMP
-
-(ON)
-@R0
-M=-1
-
-@draw
-0;JMP
-
-(OFF)
-@R0
-M=0
-
-@draw
-0;JMP
-
-(draw)
-@1000
-D=A
-@R1
-M=D
 
