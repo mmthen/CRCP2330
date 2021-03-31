@@ -10,3 +10,7 @@
 // R0 >= 0, R1 >= 0, and R0*R1 < 32768.
 
 // Put your code here.
+/**		Mov R0, #4
+ *		Mov R1, #4
+ *		Multi R2, R0, R1
+ */
