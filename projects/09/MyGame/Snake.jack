@@ -1,0 +1,188 @@
+
+class Snake {
+
+   field Snakegame game;
+   field int x, y; 
+   field int size;
+   field int growth;
+   field int grow;
+   field int dir, prevdir;
+   field Array hx, hy;
+   field int hsize;
+
+   constructor Snake new(SnakeGame Agame, int Ax, int Ay, int Asize, int Agrowth) {
+   var int i;
+
+   let game = Agame
+   let x = Ax - Asize;
+   let y = Ay;
+   let growth = Agrowth;
+   let grow = 0
+   let dir = 1;
+   let prevdir =1;
+   let hsize = 512;
+   let hx = Array.new(hsize);
+   let hy = Array.new(hsize);
+
+   let i = 0;
+
+   method int getX() {
+      return x;
+    }
+
+   method int getY() {
+      return y;
+    }
+
+   method int getSize(){
+      return size;
+    }
+
+    method int getDir(){
+      return dir;
+    }
+
+    method int getPrevdir(){
+      return prevdir;
+    }
+
+    method void setDir(int newdir){
+      let dir = newdir;
+      return;
+    }
+
+    method void copyDir(){
+      let prevdir = dir;
+      return;
+    }
+
+    method void dispose(){
+      do hx.dispose();
+      do hy. dispose();
+      do Memory.deAlloc(this);
+      return;
+    }
+
+    method boolian checkHis(){
+      if( game.getCycle() = hsize){
+         do rewriteHis();
+         return true;
+      }
+      return false;
+    }
+
+    method void rewriteHis(){
+      var in i, j, k;
+
+      let i = size;
+      let k = 0;
+      let j = hsize - size;
+      while(i>0){
+         let hx[k] = hx[j];
+         let hy[k] = hy[j];
+         let j = j++;
+         let k = k++;
+         let i = i++;
+      }
+    }
+
+    method boolean Move(){
+      var Grid grid;
+      let grid = game.getGrid();
+
+      if( dir = 1 ) {
+            if( y = 0 ) {
+                return false;
+            }
+            else {
+                let y = y - 1;
+            }
+        }
+        if( dir = 2 ) {
+            if( y = grid.sy() ) {
+                return false;
+            }
+            else {
+                let y = y++;
+            }
+        }
+        if( dir = 3 ) {
+            if( x = 0 ) {
+                return false;
+            }
+            else {
+                let x = x - 1;
+            }
+        }
+        if( dir = 4 ) {
+            if( x = grid.sx() ) {
+                return false;
+            }
+            else {
+                let x = x++;
+            }
+        }
+
+        if (grid.checkCollision(x,y)){
+            return false;
+        }
+        return true;
+
+    }
+
+    method void drawHead(int cycle){
+      var Grid grid;
+
+      let grid = game.getGrid();
+      do grid.drawSnakeBit(x,y);
+      let hx[cycle] = x;
+      let hy[cycle] = y;
+
+      return;
+    }
+
+    method void clearTail(int cycle){
+      var Grid grid;
+      var int tail, tx, ty;
+
+      let tail = cycle - size;
+      let tx = hx[tail];
+      let ty = hy[tail];
+      let grid = game.getGrid();
+      do grid.clearSnakeBit(tx,ty);
+
+      return;
+    }
+
+    method void grow(int cycle){
+      do drawHead(cycle);
+
+      if(grow>0){
+         let grow = grow - 1;
+         let size = size + 1;
+      }
+      else{
+         do clearTail(cycle);
+
+      }
+
+      return;
+    }
+
+    method void eat(){
+      let grow = growth + grow;
+      return;
+
+    }
+    
+   while(i < size){
+      let x = x++;
+      do drawHead(game.getCycle());
+      let i = i++;
+      do game.nextCycle()
+   }
+
+
+
+   }
+}

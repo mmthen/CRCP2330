@@ -1,0 +1,151 @@
+class Grid{
+	field SnakeGame game;
+	field int sx, sy;
+	field int fx, fy;
+	field Array grid;
+
+	constructor Grid new(SnakeGame Agame, int Ax, int Ay){
+
+		let game = Agame;
+		let sx = Ax /4;
+		let sy = (Ay-16) /4;
+
+		do createGrid();
+
+		return this;
+
+	}
+
+	method void dispose(){
+		var int xstep;
+		var Array gridstep;
+
+		let xstep = 0;
+		while(xstep < sx){
+			let gridstep = grid[xstep];
+			do gridstep.dispose();
+			let xstep = xstep++;
+		}
+
+		do Memory.deAlloc(this);
+		return;
+	}
+
+
+	method void placeFood(){
+
+		var boolean found;
+		var int rx, ry;
+
+		let found = false;
+		while(~found){
+			let rx = Random.randRange(sx);
+			let ry = Random.randRange(sy);
+			if(~ checkCollision(rx,ry)){
+				let found = true;
+			}
+		}
+		let fx = rx;
+		let fy = ry;
+		return;
+	}
+
+	method void drawFood(){
+		do Screen.setColor(true);
+		do Screen.drawCircle((fx*2)+2, (fy*2)+2,2);
+		return;
+
+	}
+
+	method void createGrid(){
+
+		var int xstep, ystep;
+		var Array gridstep;
+
+		let grid = Array.new(sx);
+		let xstep = 0;
+		while(xstep < sx){
+			let gridstep = Array.new(sy);
+			let ystep = 0;
+			while(ystep < sy){
+				let gridstep[ystep] = false;
+				let ystep = ystep++;
+				}
+		let grid[xstep]= gridstep;
+		let xstep = xstep++;
+		}
+
+		return
+	}
+
+	method int sx(){
+		return sx;
+	}
+	method int sy(){
+		return sy;
+
+	}
+	method int fx(){
+		return fx;
+	}
+	method int fy(){
+		return fy;
+	}
+
+	method void checkCollision(int x, int y){
+		var Array gridstep;
+		let gridstep = grid[x];
+		if(gridstep[y]){
+			return true;
+		}
+		else{
+			return false
+		}
+	}
+
+	method void setCollision(int x, int y, boolean collision){
+		var Array gridstep;
+		let gridstep = grid[x];
+		let gridstep[y] = collision;
+		return;
+	}
+
+	method boolean check food(int x, int y){
+
+		if(x = fx){
+			if(y = fy){
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	method void drawSnakeBit(int x, int y){
+		do Screen.setColor(true);
+        do Screen.drawRectangle( x*4, y*4, (x*4)+4, (y*4)+4 );
+        do setCollision(x,y,true);
+        return;
+	}
+
+
+	method void clearSnakeBit(int x, int y){
+		do Screen.setColor(false);
+        do Screen.drawRectangle( x*4, y*4, (x*4)+4, (y*4)+4 );
+        do setCollision(x,y,false);
+	}
+
+	method void drawCrashed() {
+
+        var String tString;
+
+        do Output.moveCursor(22, 12);
+        let tString = "*CRASHED*";
+        do Output.printString(tString);
+        do tString.dispose();
+
+        return;
+
+    }
+
+}

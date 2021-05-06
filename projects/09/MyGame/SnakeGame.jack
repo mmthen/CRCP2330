@@ -1,0 +1,117 @@
+
+
+class SnakeGame {
+   field Snake snake;
+   field Grid grid;
+   field int score;
+   field int cycle;
+   field int time; 
+
+   
+   constructor SquareGame new() {
+
+      let score = 0;
+      let cycle = 0;
+      let time = 100;
+
+      let grid = Grid.new(this, 512, 256);
+      let snake = Snake.new(this, grid.sx()/2, grid.sy()/2, 10, 3);
+
+      do grid.placeFood();
+      do grid.drawGUI();
+
+      return this;
+    }
+
+    method void dispose(){
+      do snake.dispose();
+      do grid.dispose();
+      do Memory.deAlloc(this);
+
+      return;
+    }
+
+    method void run(){
+      var boolean stop;
+      var int key;
+
+      let stop = false;
+      while(~stop){
+
+      do snake.copyDir();
+
+      }
+
+      let key = Keyboard.keyPressed();
+      if(key = 130){
+         if(snake.getPrevdir() = 1){
+            do snake.setDir(3);
+         }
+         if(snake.getPrevdir() = 2){
+            do snake.setDir(3);
+         }
+      }
+
+      if(key = 131){
+         if(snake.getPrevdir() = 3){
+            do snake.setDir(1);
+         }
+         if(snake.getPrevdir() = 4){
+            do snake.setDir(1);
+         }
+      }
+
+      if(key = 132){
+         if(snake.getPrevdir() = 1){
+            do snake.setDir(4);
+         }
+         if(snake.getPrevdir() = 2){
+            do snake.setDir(4);
+         }
+      }
+      if(key = 133){
+         if(snake.getPrevdir() = 3){
+            do snake.setDir(2);
+         }
+         if(snake.getPrevdir() = 4){
+            do snake.setDir(2);
+         }
+      }
+      if(~ snake.Move()){
+         do grid.drawCrashed();
+         do Sys.halt();
+      }
+
+      do snake.grow(cycle);
+      do grid.drawFood();
+      do grid.drawGUI();
+      do Sys.wait(delay);
+      do nextCycle();
+
+      if(snake.checkHis()){
+         let cycle= snake.getSize();
+      }
+    }
+    method int nextCycle(){
+      let cycle = cycle++;
+      return cycle;
+    }
+
+    method Grid getGrid(){
+      return grid;
+    }
+    method Snake getSnake(){
+      return snake;
+    }
+
+    method int getCycle(){
+      return cycle;
+    }
+    method int getScore(){
+      return score;
+    }
+
+
+}
+
+
